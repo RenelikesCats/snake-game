@@ -14,6 +14,7 @@ const foodColor = "red";
 const segmentSize = 25;
 let isRunning = false;
 let gameSpeed = 75;
+let gameTimeout;
 let xDirection = segmentSize;
 let yDirection = 0;
 let foodLocationX;
@@ -44,7 +45,7 @@ function startGame() {
 //Game tick
 function advanceGame() {
     if (isRunning) {
-        setTimeout(() => {
+        gameTimeout = setTimeout(() => {
             clearCanvas();
             drawFood();
             moveTheSnake();
@@ -152,6 +153,10 @@ function handleDirectionChange(event) {
     const aKey = 65;
     const sKey = 83;
     const dKey = 68;
+    const spaceKey = 32; //For restarting game with spacebar
+    if (spaceKey === pressedKey) {
+        resetGame();
+    }
 
     const isGoingUp = (yDirection === -segmentSize);
     const isGoingDown = (yDirection === segmentSize);
@@ -218,6 +223,7 @@ function resetGame() {
         {x: segmentSize, y: 0},
         {x: 0, y: 0}
     ];
+    clearTimeout(gameTimeout);
     startGame();
 }
 
