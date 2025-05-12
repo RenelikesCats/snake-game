@@ -144,6 +144,7 @@ function drawTheSnake() {
 }
 
 function handleDirectionChange(event) {
+    event.preventDefault();
     const pressedKey = event.keyCode;
     const leftKey = 37;
     const upKey = 38;
@@ -198,9 +199,6 @@ function checkGameOver() {
             break;
         }
     }
-    if (isRunning === false) {
-        setHighScore()
-    }
 }
 
 function displayEndScreen() {
@@ -209,6 +207,10 @@ function displayEndScreen() {
     ctx.textAlign = "center";
     ctx.fillText("GAME OVER!", boardWidth / 2, boardHeight / 2);
     isRunning = false;
+
+    ctx.fillStyle = "rgba(63,63,63,0.38)";
+    ctx.fillRect(0, 0, boardWidth, boardHeight);
+    setHighScore()
 }
 
 function resetGame() {
