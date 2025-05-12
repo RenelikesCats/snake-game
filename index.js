@@ -1,7 +1,9 @@
 const canvas = document.getElementById("snakeGameBoard");
 const ctx = canvas.getContext("2d");
 const scoreDisplay = document.getElementById("scoreText");
+const highScoreDisplay = document.getElementById("highScoreText");
 const resetButton = document.getElementById("resetGame");
+const clearHighScoreButton = document.getElementById("clearHighScore");
 
 const boardWidth = canvas.width;
 const boardHeight = canvas.height;
@@ -17,6 +19,7 @@ let yDirection = 0;
 let foodLocationX;
 let foodLocationY;
 let currentScore = 0;
+let highScore = localStorage.getItem("highScore") ? highScoreDisplay.textContent = localStorage.getItem("highScore") : highScoreDisplay.textContent = "0";
 let snakeBody = [
     {x: segmentSize * 4, y: 0},
     {x: segmentSize * 3, y: 0},
@@ -27,6 +30,7 @@ let snakeBody = [
 
 window.addEventListener("keydown", handleDirectionChange);
 resetButton.addEventListener("click", resetGame);
+clearHighScoreButton.addEventListener("click", clearHighScore);
 document.addEventListener("DOMContentLoaded", startGame)
 
 function startGame() {
@@ -50,6 +54,26 @@ function advanceGame() {
         }, gameSpeed);
     } else {
         displayEndScreen();
+    }
+}
+
+function setHighScore() {
+    const score = localStorage.getItem("highScore");
+    const currentScoreNumber = Number(currentScore);
+
+    if (score === null) {
+        localStorage.setItem("highScore", currentScoreNumber);
+        highScoreDisplay.textContent = currentScoreNumber;
+        return;
+    }
+
+    const highScoreNumber = Number(score);
+
+    if (currentScoreNumber > highScoreNumber) {
+        localStorage.setItem("highScore", currentScoreNumber);
+        highScoreDisplay.textContent = currentScoreNumber;
+    } else {
+        highScoreDisplay.textContent = highScoreNumber;
     }
 }
 
@@ -152,6 +176,7 @@ function handleDirectionChange(event) {
             yDirection = segmentSize;
             break;
     }
+
 }
 
 function checkGameOver() {
@@ -167,6 +192,9 @@ function checkGameOver() {
             isRunning = false;
             break;
         }
+    }
+    if (isRunning === false) {
+        setHighScore()
     }
 }
 
@@ -191,4 +219,12 @@ function resetGame() {
         {x: 0, y: 0}
     ];
     startGame();
+}
+
+function clearHighScore() {
+    if (confirm("Are you sure you want to delete high score data?")) {
+        localStorage.clear();
+        highScoreDisplay.textContent = "0"
+        resetGame();
+    }
 }
