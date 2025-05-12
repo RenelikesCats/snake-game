@@ -23,3 +23,4 @@ It's a fun and engaging project that demonstrates fundamental JavaScript concept
 * **Left Arrow / A:** Move the snake left.
 * **Right Arrow / D:** Move the snake right.
 
+### Demo link: https://renelikescats.github.io/snake-game/
